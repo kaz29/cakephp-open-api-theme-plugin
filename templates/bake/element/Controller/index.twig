@@ -1,0 +1,103 @@
+{#
+/**
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @since         2.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+#}
+{% set belongsTo = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
+    /**
+     * Index method
+     *
+     * @OA\Get(
+{% if prefix %}
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}.json",
+{% else %}
+     *     path="/{{ pluralName }}.json",
+{% endif %}
+     *     summary="{{ currentModelName }} index",
+     *     description="{{ currentModelName }} index",
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="number",
+     *         ),
+     *         description=""
+     *     ),
+     *     @OA\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="number",
+     *         ),
+     *         description=""
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  default=true,
+     *              ),
+{% if belongsTo %}
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(
+     *                      allOf={
+     *                          @OA\Schema(ref="#/components/schemas/{{ singularHumanName }}"),
+     *                          @OA\Schema(
+{% for table in belongsTo %}
+     *                              @OA\Property(
+     *                                  property="{{ OpenApiText.lower(OpenApiText.singularize(table)) }}",
+     *                                  ref="#/components/schemas/{{ OpenApiText.singularize(table) }}",
+     *                                  description="{{ OpenApiText.singularize(table) }} Entity",
+     *                              ),
+{% endfor %}
+     *                          ),
+     *                      },
+     *                  ),
+     *              ),
+{% else %}
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/{{ singularHumanName }}"),
+     *              ),
+{% endif %}
+     *              @OA\Property(
+     *                  property="pagination",
+     *                  ref="#/components/schemas/Pagination",
+     *              ),
+     *         ),
+     *     ),
+     * )
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function index()
+    {
+        if (!$this->request->is('get')) {
+            throw new MethodNotAllowedException();
+        }
+{% if belongsTo %}
+
+        $this->Crud->on('beforePaginate', function (Event $event) {
+            $event->getSubject()->query->contain([{{ Bake.stringifyList(belongsTo, {'indent': false})|raw }}]);
+        });
+{% endif %}
+
+        return $this->Crud->execute();
+    }

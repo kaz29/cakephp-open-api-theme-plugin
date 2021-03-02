@@ -1,0 +1,70 @@
+{#
+/**
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @since         2.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+#}
+{% set compact = ["'#{singularName}'"] %}
+    /**
+     * Add method
+     *
+     * @OA\Post(
+{% if prefix %}
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}/add.json",
+{% else %}
+     *     path="/{{ pluralName }}/add.json",
+{% endif %}
+     *     summary="Add {{ singularName }}",
+     *     description="Add {{ singularName }}",
+{{ OpenApiDocBlock.openApiActionBody(propertySchema)|raw }}
+     *     @OA\Response(
+     *         response=201,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  default=true,
+     *              ),
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="id",
+     *                      type="integer",
+     *                      description="Added {{ singularName }} id",
+     *                  ),
+     *              ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found",
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/ValidationErrorResponse",
+     *         ),
+     *     ),
+     * )
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function add()
+    {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
+        }
+        
+        return $this->Crud->execute();
+    }

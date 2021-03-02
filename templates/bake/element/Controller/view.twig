@@ -1,0 +1,108 @@
+{#
+/**
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @since         2.0.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+#}
+{% set allAssociations = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
+{% set allAssociations = allAssociations|merge(Bake.aliasExtractor(modelObj, 'BelongsToMany')) %}
+{% set allAssociations = allAssociations|merge(Bake.aliasExtractor(modelObj, 'HasOne')) %}
+{% set allAssociations = allAssociations|merge(Bake.aliasExtractor(modelObj, 'HasMany')) %}
+{% set singularAssociations = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
+{% set singularAssociations = singularAssociations|merge(Bake.aliasExtractor(modelObj, 'HasOne')) %}
+{% set pluralAssociations = Bake.aliasExtractor(modelObj, 'BelongsToMany') %}
+{% set pluralAssociations = pluralAssociations|merge(Bake.aliasExtractor(modelObj, 'HasMany')) %}
+    /**
+     * View method
+     *
+     * @OA\Get(
+{% if prefix %}
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}/{id}.json",
+{% else %}
+     *     path="/{{ pluralName }}.json",
+{% endif %}
+     *     summary="Get {{ singularHumanName }}",
+     *     description="Get {{ singularHumanName }}",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="number",
+     *         ),
+     *         description=""
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="success",
+     *                  type="boolean",
+     *                  default=true,
+     *              ),
+{% if singularAssociations or pluralAssociations %}
+     *              @OA\Property(
+     *                  property="data",
+     *                  allOf={
+     *                      @OA\Schema(ref="#/components/schemas/{{ singularHumanName }}"),
+     *                      @OA\Schema(
+{% for table in singularAssociations %}
+     *                          @OA\Property(
+     *                              property="{{ OpenApiText.lower(OpenApiText.singularize(table)) }}",
+     *                              ref="#/components/schemas/{{ OpenApiText.singularize(table) }}",
+     *                              description="{{ OpenApiText.singularize(table) }} Entity",
+     *                          ),
+{% endfor %}
+{% for table in pluralAssociations %}
+     *                          @OA\Property(
+     *                              property="{{ OpenApiText.lower(table) }}",
+     *                              type="array",
+     *                              @OA\Items(ref="#/components/schemas/{{ OpenApiText.singularize(table) }}"),
+     *                              description="{{ OpenApiText.singularize(table) }} Entities",
+     *                          ),
+{% endfor %}
+     *                      ),
+     *                  },
+     *              ),
+{% else %}
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="array",
+     *                  @OA\Items(ref="#/components/schemas/{{ singularHumanName }}"),
+     *              ),
+{% endif %}
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found",
+     *     ),
+     * )
+     * @param string|null $id {{ singularHumanName }} id.
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        if (!$this->request->is('get')) {
+            throw new MethodNotAllowedException();
+        }
+{% if allAssociations %}
+
+        $this->Crud->on('beforeFind', function (Event $event) {
+            $event->getSubject()->query->contain([{{ Bake.stringifyList(allAssociations, {'indent': false})|raw }}]);
+        });
+{% endif %}
+
+        return $this->Crud->execute();
+    }
