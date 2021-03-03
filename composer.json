@@ -20,5 +20,11 @@
             "OpenApiTheme\\Test\\": "tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
         }
+    },
+    "bin": [
+        "bin/build-swagger-json"
+    ],
+    "scripts": {
+        "build:swagger": "build-swagger-json"
     }
 }
