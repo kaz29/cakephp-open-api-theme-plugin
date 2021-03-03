@@ -1,8 +1,8 @@
 #!/usr/local/bin/php -q
 <?php
-require dirname(__DIR__) . '/vendor/autoload.php';
+include_once __DIR__.'/../../../autoload.php';
 
-$app_path = dirname(__DIR__);
+$app_path = '.';
 $openapi = \OpenApi\scan(
     $app_path, 
     [

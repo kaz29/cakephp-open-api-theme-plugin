@@ -19,8 +19,24 @@ composer require kaz29/cakephp-open-api-theme-plugin --dev
 
 - Copy `swagger-settings.php` to config directory.
 - Describe the settings of your application in `swagger-settings.php`.
-- Copy `swagger.php` to bin directory.
-- Grant execution permissions to `swagger.php`.
+- Add `"build:swagger" : "build-swagger-json"` into your app's composer.json scripts section.
+
+    ```
+    "scripts": {
+        "post-install-cmd": "App\\Console\\Installer::postInstall",
+        "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "check": [
+            "@test",
+            "@cs-check"
+        ],
+        "cs-check": "phpcs --colors -p  src/ tests/",
+        "cs-fix": "phpcbf --colors -p src/ tests/",
+        "stan": "phpstan analyse",
+        "test": "phpunit --colors=always",
+        "build:swagger" : "build-swagger-json"  // <-- add this line
+    },
+    ```
+
 - Add the following configuration to the end of config/bootstrap_cli.php.
 
 ```
@@ -62,7 +78,7 @@ $ bin/cake bake open_api_model Articles
 ### create swagger.json
 
 ```
-$ bin/swagger.php
+$ composer build:swagger
 ```
 
 ## Author
