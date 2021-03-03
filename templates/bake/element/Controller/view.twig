@@ -65,7 +65,7 @@
 {% endfor %}
 {% for table in pluralAssociations %}
      *                          @OA\Property(
-     *                              property="{{ OpenApiText.lower(table) }}",
+     *                              property="{{ OpenApiText.tableize(OpenApiText.singularize(table)) }}",
      *                              type="array",
      *                              @OA\Items(ref="#/components/schemas/{{ OpenApiText.singularize(table) }}"),
      *                              description="{{ OpenApiText.singularize(table) }} Entities",

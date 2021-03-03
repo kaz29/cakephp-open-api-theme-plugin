@@ -8,6 +8,11 @@ use Cake\View\Helper;
 
 class OpenApiTextHelper extends Helper
 {
+    public function tableize(string $value): string
+    {
+        return Inflector::tableize($value);
+    }
+
     public function singularize(string $value): string
     {
         return Inflector::singularize($value);
