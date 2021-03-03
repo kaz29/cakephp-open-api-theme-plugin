@@ -10,6 +10,11 @@ The recommended way to install composer packages is:
 composer require kaz29/cakephp-open-api-theme-plugin --dev
 ```
 
+## Dependency
+
+- [Crud plugin](https://github.com/FriendsOfCake/crud)
+- [swagger-php](https://github.com/zircote/swagger-php)
+
 ## Setup
 
 - Copy `swagger-settings.php` to config directory.
