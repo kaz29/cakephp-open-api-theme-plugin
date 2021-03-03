@@ -59,3 +59,11 @@ $ bin/cake bake open_api_model Articles
 ```
 $ bin/swagger.php
 ```
+
+## Author
+
+Kazuhiro Watanabe - cyo [at] mac.com - [https://twitter.com/kaz_29](https://twitter.com/kaz_29)
+
+## License
+
+Phai is licensed under the MIT License - see the LICENSE file for details
