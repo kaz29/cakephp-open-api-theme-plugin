@@ -62,7 +62,7 @@
      *                          @OA\Schema(
 {% for table in belongsTo %}
      *                              @OA\Property(
-     *                                  property="{{ OpenApiText.lower(OpenApiText.singularize(table)) }}",
+     *                                  property="{{ OpenApiText.underscore(OpenApiText.singularize(table)) }}",
      *                                  ref="#/components/schemas/{{ OpenApiText.singularize(table) }}",
      *                                  description="{{ OpenApiText.singularize(table) }} Entity",
      *                              ),

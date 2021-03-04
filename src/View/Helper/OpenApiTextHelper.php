@@ -18,6 +18,11 @@ class OpenApiTextHelper extends Helper
         return Inflector::singularize($value);
     }
 
+    public function underscore(string $value): string
+    {
+        return Inflector::underscore($value);
+    }
+
     public function lower(string $value): string
     {
         return strtolower($value);
