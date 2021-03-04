@@ -58,14 +58,14 @@
      *                      @OA\Schema(
 {% for table in singularAssociations %}
      *                          @OA\Property(
-     *                              property="{{ OpenApiText.lower(OpenApiText.singularize(table)) }}",
+     *                              property="{{ OpenApiText.underscore(OpenApiText.singularize(table)) }}",
      *                              ref="#/components/schemas/{{ OpenApiText.singularize(table) }}",
      *                              description="{{ OpenApiText.singularize(table) }} Entity",
      *                          ),
 {% endfor %}
 {% for table in pluralAssociations %}
      *                          @OA\Property(
-     *                              property="{{ OpenApiText.tableize(OpenApiText.singularize(table)) }}",
+     *                              property="{{ OpenApiText.underscore(table) }}",
      *                              type="array",
      *                              @OA\Items(ref="#/components/schemas/{{ OpenApiText.singularize(table) }}"),
      *                              description="{{ OpenApiText.singularize(table) }} Entities",
