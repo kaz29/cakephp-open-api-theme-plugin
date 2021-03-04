@@ -18,9 +18,9 @@
      *
      * @OA\Delete(
 {% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}.json",
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}/{id}.json",
 {% else %}
-     *     path="/{{ pluralName }}.json",
+     *     path="/{{ pluralName }}/{id}.json",
 {% endif %}
      *     summary="Delete {{ OpenApiText.lower(singularHumanName) }}",
      *     description="Delete {{ OpenApiText.lower(singularHumanName) }}",

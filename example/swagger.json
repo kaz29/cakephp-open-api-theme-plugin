@@ -1,0 +1,1089 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "App",
+        "description": "API document",
+        "contact": {
+            "email": "info@example.com"
+        },
+        "license": {
+            "name": "Example Inc.",
+            "url": "https://www.example.com/"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "localhost"
+        }
+    ],
+    "paths": {
+        "/api/articles.json": {
+            "get": {
+                "summary": "Articles index",
+                "description": "Articles index",
+                "operationId": "App\\Controller\\Api\\ArticlesController::index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Index method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "Index method",
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/Article"
+                                                    },
+                                                    {
+                                                        "properties": {
+                                                            "user": {
+                                                                "$ref": "#/components/schemas/User"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete article",
+                "description": "Delete article",
+                "operationId": "App\\Controller\\Api\\ArticlesController::delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Article id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Delete method",
+                                            "type": "boolean",
+                                            "default": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/articles/{id}.json": {
+            "get": {
+                "summary": "Get Article",
+                "description": "Get Article",
+                "operationId": "App\\Controller\\Api\\ArticlesController::view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "View method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "View method",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Article"
+                                                },
+                                                {
+                                                    "properties": {
+                                                        "user": {
+                                                            "$ref": "#/components/schemas/User"
+                                                        },
+                                                        "tags": {
+                                                            "description": "Tag Entities",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/components/schemas/Tag"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Edit article",
+                "description": "Edit article",
+                "operationId": "App\\Controller\\Api\\ArticlesController::edit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "description": "",
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "title": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "body": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "published": {
+                                        "description": "",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Edit method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Article"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/articles/add.json": {
+            "post": {
+                "summary": "Add article",
+                "description": "Add article",
+                "operationId": "App\\Controller\\Api\\ArticlesController::add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "description": "",
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "title": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "slug": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "body": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "published": {
+                                        "description": "",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Add method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "Add method",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Added article id",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tags.json": {
+            "get": {
+                "summary": "Tags index",
+                "description": "Tags index",
+                "operationId": "App\\Controller\\Api\\TagsController::index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Index method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "Index method",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Tag"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete tag",
+                "description": "Delete tag",
+                "operationId": "App\\Controller\\Api\\TagsController::delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tag id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Delete method",
+                                            "type": "boolean",
+                                            "default": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/tags/{id}.json": {
+            "get": {
+                "summary": "Get Tag",
+                "description": "Get Tag",
+                "operationId": "App\\Controller\\Api\\TagsController::view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "View method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "View method",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/Tag"
+                                                },
+                                                {
+                                                    "properties": {
+                                                        "articles": {
+                                                            "description": "Article Entities",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/components/schemas/Article"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Edit tag",
+                "description": "Edit tag",
+                "operationId": "App\\Controller\\Api\\TagsController::edit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Edit method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Tag"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tags/add.json": {
+            "post": {
+                "summary": "Add tag",
+                "description": "Add tag",
+                "operationId": "App\\Controller\\Api\\TagsController::add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Add method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "Add method",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Added tag id",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users.json": {
+            "get": {
+                "summary": "Users index",
+                "description": "Users index",
+                "operationId": "App\\Controller\\Api\\UsersController::index",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Index method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "Index method",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "#/components/schemas/Pagination"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete user",
+                "description": "Delete user",
+                "operationId": "App\\Controller\\Api\\UsersController::delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Delete method",
+                                            "type": "boolean",
+                                            "default": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}.json": {
+            "get": {
+                "summary": "Get User",
+                "description": "Get User",
+                "operationId": "App\\Controller\\Api\\UsersController::view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "View method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "View method",
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/User"
+                                                },
+                                                {
+                                                    "properties": {
+                                                        "articles": {
+                                                            "description": "Article Entities",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/components/schemas/Article"
+                                                            }
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Edit user",
+                "description": "Edit user",
+                "operationId": "App\\Controller\\Api\\UsersController::edit",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Edit method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/add.json": {
+            "post": {
+                "summary": "Add user",
+                "description": "Add user",
+                "operationId": "App\\Controller\\Api\\UsersController::add",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "description": "Add method",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "data": {
+                                            "description": "Add method",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Added user id",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Pagination": {
+                "title": "Pagination information",
+                "properties": {
+                    "page_count": {
+                        "description": "Total page",
+                        "type": "integer"
+                    },
+                    "current_page": {
+                        "description": "Current page",
+                        "type": "integer"
+                    },
+                    "has_prev_page": {
+                        "description": "Has previous page",
+                        "type": "boolean"
+                    },
+                    "has_next_page": {
+                        "description": "Has next page",
+                        "type": "boolean"
+                    },
+                    "count": {
+                        "description": "Item count",
+                        "type": "integer"
+                    },
+                    "limit": {
+                        "description": "Page limit",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationErrorResponse": {
+                "title": "Validation error response",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "message": {
+                        "description": "Error message",
+                        "type": "string"
+                    },
+                    "code": {
+                        "description": "Response code",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Article": {
+                "title": "",
+                "description": "Article entity",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "user_id": {
+                        "description": "",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "title": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "slug": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "body": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "published": {
+                        "description": "",
+                        "type": "boolean"
+                    },
+                    "created": {
+                        "description": "",
+                        "type": "string",
+                        "format": "datetime"
+                    },
+                    "modified": {
+                        "description": "",
+                        "type": "string",
+                        "format": "datetime"
+                    }
+                },
+                "type": "object"
+            },
+            "Tag": {
+                "title": "",
+                "description": "Tag entity",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "title": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "created": {
+                        "description": "",
+                        "type": "string",
+                        "format": "datetime"
+                    },
+                    "modified": {
+                        "description": "",
+                        "type": "string",
+                        "format": "datetime"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "",
+                "description": "User entity",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "email": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "created": {
+                        "description": "",
+                        "type": "string",
+                        "format": "datetime"
+                    },
+                    "modified": {
+                        "description": "",
+                        "type": "string",
+                        "format": "datetime"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
