@@ -81,6 +81,10 @@ $ bin/cake bake open_api_model Articles
 $ composer build:swagger
 ```
 
+## Baked example
+
+A sample of the bake of the [CakePHP CMS Tutorial](https://book.cakephp.org/4/en/tutorials-and-examples/cms/installation.html) can be found in the [example directory](example/).
+
 ## Author
 
 Kazuhiro Watanabe - cyo [at] mac.com - [https://twitter.com/kaz_29](https://twitter.com/kaz_29)
