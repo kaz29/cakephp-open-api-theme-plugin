@@ -87,4 +87,4 @@ Kazuhiro Watanabe - cyo [at] mac.com - [https://twitter.com/kaz_29](https://twit
 
 ## License
 
-Phai is licensed under the MIT License - see the LICENSE file for details
+OpenApiTheme plugin for CakePHP is licensed under the MIT License - see the LICENSE file for details
