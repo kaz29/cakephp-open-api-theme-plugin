@@ -85,6 +85,8 @@ $ composer build:swagger
 
 A sample of the bake of the [CakePHP CMS Tutorial](https://book.cakephp.org/4/en/tutorials-and-examples/cms/installation.html) can be found in the [example directory](example/).
 
+- [Swagger UI example](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/kaz29/cakephp-open-api-theme-plugin/example/swagger.json)
+
 ## Author
 
 Kazuhiro Watanabe - cyo [at] mac.com - [https://twitter.com/kaz_29](https://twitter.com/kaz_29)
