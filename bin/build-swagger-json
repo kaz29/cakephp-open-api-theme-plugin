@@ -1,6 +1,6 @@
 #!/usr/local/bin/php -q
 <?php
-include_once __DIR__.'/../autoload.php';
+include_once __DIR__.'/../../../autoload.php';
 
 $app_path = '.';
 $openapi = \OpenApi\scan(
