@@ -21,7 +21,7 @@
      *
      * @OA\Put(
 {% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}/{id}.json",
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json",
 {% else %}
      *     path="/{{ pluralName }}/{id}.json",
 {% endif %}
