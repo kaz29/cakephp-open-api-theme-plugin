@@ -19,7 +19,7 @@
      *
      * @OA\Get(
 {% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}.json",
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}.json",
 {% else %}
      *     path="/{{ pluralName }}.json",
 {% endif %}
@@ -58,7 +58,7 @@
      *                  type="array",
      *                  @OA\Items(
      *                      allOf={
-     *                          @OA\Schema(ref="#/components/schemas/{{ singularHumanName }}"),
+     *                          @OA\Schema(ref="#/components/schemas/{{ entityClassName }}"),
      *                          @OA\Schema(
 {% for table in belongsTo %}
      *                              @OA\Property(
@@ -75,7 +75,7 @@
      *              @OA\Property(
      *                  property="data",
      *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/{{ singularHumanName }}"),
+     *                  @OA\Items(ref="#/components/schemas/{{ entityClassName }}"),
      *              ),
 {% endif %}
      *              @OA\Property(

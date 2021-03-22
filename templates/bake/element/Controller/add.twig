@@ -19,7 +19,7 @@
      *
      * @OA\Post(
 {% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}/add.json",
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/add.json",
 {% else %}
      *     path="/{{ pluralName }}/add.json",
 {% endif %}

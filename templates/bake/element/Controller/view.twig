@@ -26,7 +26,7 @@
      *
      * @OA\Get(
 {% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ pluralName }}/{id}.json",
+     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json",
 {% else %}
      *     path="/{{ pluralName }}.json",
 {% endif %}
@@ -54,7 +54,7 @@
      *              @OA\Property(
      *                  property="data",
      *                  allOf={
-     *                      @OA\Schema(ref="#/components/schemas/{{ singularHumanName }}"),
+     *                      @OA\Schema(ref="#/components/schemas/{{ entityClassName }}"),
      *                      @OA\Schema(
 {% for table in singularAssociations %}
      *                          @OA\Property(
@@ -78,7 +78,7 @@
      *              @OA\Property(
      *                  property="data",
      *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/{{ singularHumanName }}"),
+     *                  @OA\Items(ref="#/components/schemas/{{ entityClassName }}"),
      *              ),
 {% endif %}
      *         ),
