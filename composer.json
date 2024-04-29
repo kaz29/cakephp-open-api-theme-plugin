@@ -4,11 +4,12 @@
     "type": "cakephp-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=7.2",
-        "cakephp/cakephp": "~4.2.0"
+        "php": ">=8.1",
+        "cakephp/cakephp": "^5.0.1",
+        "cakephp/bake": "^1.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^10.1.0"
     },
     "autoload": {
         "psr-4": {
@@ -26,5 +27,10 @@
     ],
     "scripts": {
         "build:swagger": "build-swagger-json"
+    },
+    "config": {
+        "allow-plugins": {
+            "cakephp/plugin-installer": true
+        }
     }
 }
