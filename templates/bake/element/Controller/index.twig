@@ -17,76 +17,41 @@
     /**
      * Index method
      *
-     * @OA\Get(
-{% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}.json",
-{% else %}
-     *     path="/{{ pluralName }}.json",
-{% endif %}
-     *     summary="{{ currentModelName }} index",
-     *     description="{{ currentModelName }} index",
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="number",
-     *         ),
-     *         description=""
-     *     ),
-     *     @OA\Parameter(
-     *         name="limit",
-     *         in="query",
-     *         required=false,
-     *         @OA\Schema(
-     *             type="number",
-     *         ),
-     *         description=""
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="success",
-     *                  type="boolean",
-     *                  default=true,
-     *              ),
-{% if belongsTo %}
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @OA\Items(
-     *                      allOf={
-     *                          @OA\Schema(ref="#/components/schemas/{{ entityClassName }}"),
-     *                          @OA\Schema(
-{% for table in belongsTo %}
-     *                              @OA\Property(
-     *                                  property="{{ OpenApiText.underscore(OpenApiText.singularize(table)) }}",
-     *                                  ref="#/components/schemas/{{ OpenApiText.singularize(table) }}",
-     *                                  description="{{ OpenApiText.singularize(table) }} Entity",
-     *                              ),
-{% endfor %}
-     *                          ),
-     *                      },
-     *                  ),
-     *              ),
-{% else %}
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/{{ entityClassName }}"),
-     *              ),
-{% endif %}
-     *              @OA\Property(
-     *                  property="pagination",
-     *                  ref="#/components/schemas/Pagination",
-     *              ),
-     *         ),
-     *     ),
-     * )
      * @return \Psr\Http\Message\ResponseInterface
      */
+    #[OA\Get(
+{% if prefix %}
+        path: '/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}.json',
+{% else %}
+        path: '/{{ pluralName }}.json',
+{% endif %}
+        summary: '{{ currentModelName }} index',
+        parameters: [
+            new OA\Parameter(
+                name: 'page',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'number'),
+                description: 'Page number to be get',
+            ),
+            new OA\Parameter(
+                name: 'limit',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'number'),
+                description: 'Number of elements per page',
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'OK',
+                content: new OA\JsonContent(ref: '#components/schemas/{{ singularHumanName }}'),
+            ),
+            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(response: 403, description: 'Forbidden'),
+        ]
+    )]
     public function index()
     {
         if (!$this->request->is('get')) {

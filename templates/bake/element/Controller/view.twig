@@ -24,74 +24,71 @@
     /**
      * View method
      *
-     * @OA\Get(
-{% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json",
-{% else %}
-     *     path="/{{ pluralName }}.json",
-{% endif %}
-     *     summary="Get {{ singularHumanName }}",
-     *     description="Get {{ singularHumanName }}",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="number",
-     *         ),
-     *         description=""
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="success",
-     *                  type="boolean",
-     *                  default=true,
-     *              ),
-{% if singularAssociations or pluralAssociations %}
-     *              @OA\Property(
-     *                  property="data",
-     *                  allOf={
-     *                      @OA\Schema(ref="#/components/schemas/{{ entityClassName }}"),
-     *                      @OA\Schema(
-{% for table in singularAssociations %}
-     *                          @OA\Property(
-     *                              property="{{ OpenApiText.underscore(OpenApiText.singularize(table)) }}",
-     *                              ref="#/components/schemas/{{ OpenApiText.singularize(table) }}",
-     *                              description="{{ OpenApiText.singularize(table) }} Entity",
-     *                          ),
-{% endfor %}
-{% for table in pluralAssociations %}
-     *                          @OA\Property(
-     *                              property="{{ OpenApiText.underscore(table) }}",
-     *                              type="array",
-     *                              @OA\Items(ref="#/components/schemas/{{ OpenApiText.singularize(table) }}"),
-     *                              description="{{ OpenApiText.singularize(table) }} Entities",
-     *                          ),
-{% endfor %}
-     *                      ),
-     *                  },
-     *              ),
-{% else %}
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @OA\Items(ref="#/components/schemas/{{ entityClassName }}"),
-     *              ),
-{% endif %}
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not found",
-     *     ),
-     * )
      * @param string|null $id {{ singularHumanName }} id.
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+{% set IdProperty = OpenApiDocBlock.schemaProperty(propertySchema, 'id') %}
+    #[OA\Get(
+{% if prefix %}
+        path: "/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json",
+{% else %}
+        path: "/{{ pluralName }}.json",
+{% endif %}
+        summary: "Get {{ singularHumanName }}",
+        description: "Get {{ singularHumanName }}",
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: '{{ IdProperty['type']|raw }}', format: '{{ IdProperty['format']|raw }}'),
+                description: '{{ singularHumanName }} id',
+            ),
+        ],
+        responses: [
+{% if singularAssociations or pluralAssociations %}
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(
+                    type: 'object',
+                    allOf: [
+                        new OA\Schema(ref: '#components/schemas/{{ singularHumanName }}'),
+                        new OA\Schema(
+                            properties: [
+{% for table in singularAssociations %}
+                                new OA\Property(
+                                    property: "{{ OpenApiText.underscore(OpenApiText.singularize(table)) }}",
+                                    ref: "#/components/schemas/{{ OpenApiText.singularize(table) }}",
+                                    description: "{{ OpenApiText.singularize(table) }} Entity",
+                                ),
+{% endfor %}
+{% for table in pluralAssociations %}
+                                new OA\Property(
+                                    property: "{{ OpenApiText.underscore(table) }}",
+                                    type: "array",
+                                    items: new OA\Items(ref: "#/components/schemas/{{ OpenApiText.singularize(table) }}"),
+                                    description: "{{ OpenApiText.singularize(table) }} Entities",
+                                ),
+{% endfor %}
+                            ],
+                        ),
+                    ],
+                ),
+            ),
+{% else %}
+            new OA\Response(
+                response: 200,
+                description: 'OK',
+                content: new OA\JsonContent(ref: '#components/schemas/{{ singularHumanName }}'),
+            ),
+{% endif %}
+            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(response: 403, description: 'Forbidden'),
+            new OA\Response(response: 404, description: 'Not Found'),
+        ]
+    )]
     public function view($id = null)
     {
         if (!$this->request->is('get')) {

@@ -6,7 +6,8 @@
     "require": {
         "php": ">=8.1",
         "cakephp/cakephp": "^5.0.1",
-        "cakephp/bake": "^1.2"
+        "cakephp/bake": "^3.1",
+        "zircote/swagger-php": "^4.9"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.1.0"

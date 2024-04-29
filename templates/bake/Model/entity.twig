@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace {{ namespace }}\Model\Entity;
 
 use Cake\ORM\Entity;
+use OpenApi\Attributes as OA;
 
 {{ OpenApiDocBlock.openApiClassDescription(name, 'Entity', annotations, propertySchema)|raw }}
 class {{ name }} extends Entity
@@ -43,7 +44,7 @@ class {{ name }} extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = {{ Bake.exportVar(accessible, 1)|raw }};
+    protected array $_accessible = {{ Bake.exportVar(accessible, 1)|raw }};
 {% endif %}
 {% if accessible and hidden %}
 
@@ -54,6 +55,6 @@ class {{ name }} extends Entity
      *
      * @var array
      */
-    protected $_hidden = [{{ Bake.stringifyList(hidden)|raw }}];
+    protected array $_hidden = [{{ Bake.stringifyList(hidden)|raw }}];
 {% endif %}
 }
