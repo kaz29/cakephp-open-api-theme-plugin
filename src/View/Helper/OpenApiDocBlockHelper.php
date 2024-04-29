@@ -159,7 +159,7 @@ class OpenApiDocBlockHelper extends DocBlockHelper
         ];
     }
 
-    protected function makeOpenAPIColumn(string $name, string $type, array $column, int $indentNum = 12): array
+    protected function makeOpenAPIColumn(string $name, string $type, array $column, int $indentNum = 20): array
     {
         $indentString = str_repeat(' ', $indentNum);
         $result = [];
