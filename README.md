@@ -33,7 +33,7 @@ composer require kaz29/cakephp-open-api-theme-plugin --dev
         "cs-fix": "phpcbf --colors -p src/ tests/",
         "stan": "phpstan analyse",
         "test": "phpunit --colors=always",
-        "build:swagger" : "build-swagger-json"  // <-- add this line
+                "build:openapi": "openapi -b ./vendor/autoload.php --output /srv/docs/openapi.yml ./src"  // <-- add this line
     },
     ```
 
@@ -44,6 +44,30 @@ Configure::write('Bake.theme', 'OpenApiTheme');
 ```
 
 - Change Application.php as follows.
+
+```
+#[OA\Info(title: '**Your Application name**', version: '**Your application version**')]
+#[OA\Server(description: '**Environment name**', url: '**URL**')]
+#[OA\Schema(
+    schema: 'ValidationErrorResponse',
+    title: 'Validation error response',
+    required: ['message', 'errors'],
+    properties: [
+        new OA\Property(
+            property: 'message',
+            type: 'string',
+            description: 'Error message',
+        ),
+        new OA\Property(
+            property: 'errors',
+            type: 'object',
+            description: 'Error details',
+        ),
+    ]
+)]
+class Application extends BaseApplication
+...
+```
 
 ```
     protected function bootstrapCli(): void
