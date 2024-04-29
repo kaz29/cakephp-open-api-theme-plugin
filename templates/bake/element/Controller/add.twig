@@ -17,49 +17,32 @@
     /**
      * Add method
      *
-     * @OA\Post(
-{% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/add.json",
-{% else %}
-     *     path="/{{ pluralName }}/add.json",
-{% endif %}
-     *     summary="Add {{ singularName }}",
-     *     description="Add {{ singularName }}",
-{{ OpenApiDocBlock.openApiActionBody(propertySchema)|raw }}
-     *     @OA\Response(
-     *         response=201,
-     *         description="successful operation",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="success",
-     *                  type="boolean",
-     *                  default=true,
-     *              ),
-     *              @OA\Property(
-     *                  property="data",
-     *                  type="object",
-     *                  @OA\Property(
-     *                      property="id",
-     *                      type="integer",
-     *                      description="Added {{ singularName }} id",
-     *                  ),
-     *              ),
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not Found",
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error",
-     *         @OA\JsonContent(
-     *             ref="#/components/schemas/ValidationErrorResponse",
-     *         ),
-     *     ),
-     * )
      * @return \Psr\Http\Message\ResponseInterface
      */
+    #[OA\Post(
+{% if prefix %}
+        path: '/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/add.json',
+{% else %}
+        path: '/{{ pluralName }}/add.json',
+{% endif %}
+        summary: 'Add {{ singularName }}',
+        description: 'Add {{ singularName }}',
+{{ OpenApiDocBlock.openApiActionBody(propertySchema)|raw }}
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'OK',
+                content: new OA\JsonContent(ref: '#components/schemas/{{ singularHumanName }}'),
+            ),
+            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(response: 403, description: 'Forbidden'),
+            new OA\Response(
+                response: 422,
+                description: 'Validation Error',
+                content: new OA\JsonContent(ref: '#components/schemas/Application'),
+            ),
+        ]
+    )]
     public function add()
     {
         if (!$this->request->is('post')) {

@@ -16,43 +16,35 @@
     /**
      * Delete method
      *
-     * @OA\Delete(
-{% if prefix %}
-     *     path="/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json",
-{% else %}
-     *     path="/{{ pluralName }}/{id}.json",
-{% endif %}
-     *     summary="Delete {{ OpenApiText.lower(singularHumanName) }}",
-     *     description="Delete {{ OpenApiText.lower(singularHumanName) }}",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *         required=true,
-     *         description="{{ singularHumanName }} id",
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful operation",
-     *         @OA\JsonContent(
-     *              @OA\Property(
-     *                  property="success",
-     *                  type="boolean",
-     *                  default=true,
-     *              ),
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not found",
-     *     ),
-     * )
      * @param string|null $id {{ singularHumanName }} id.
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
+{% set IdProperty = OpenApiDocBlock.schemaProperty(propertySchema, 'id') %}
+    #[OA\Delete(
+{% if prefix %}
+        path: '/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json',
+{% else %}
+        path: '/{{ pluralName }}/{id}.json',
+{% endif %}
+        summary: 'Delete {{ OpenApiText.lower(singularHumanName) }}',
+        description: 'Delete {{ OpenApiText.lower(singularHumanName) }}',
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: '{{ IdProperty['type']|raw }}', format: '{{ IdProperty['format']|raw }}'),
+                description: '{{ singularHumanName }} id',
+            ),
+        ],
+        responses: [
+            new OA\Response(response: 204, description: 'OK'),
+            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(response: 403, description: 'Forbidden'),
+            new OA\Response(response: 404, description: 'Not Found'),
+        ]
+    )]
     public function delete($id = null)
     {
         if (!$this->request->is('delete')) {
