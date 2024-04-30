@@ -63,7 +63,7 @@ class OpenApiDocBlockHelper extends DocBlockHelper
         }
 
         $lines[] = '#[OA\Schema(';
-        $lines[] = "    schema: '{$className}}',";
+        $lines[] = "    schema: '{$className}',";
         $lines[] = "    title: '{$className}',";
         $lines[] = "    description: '{$className} Entity',";
         $lines[] = "    required: [{$required}],";
