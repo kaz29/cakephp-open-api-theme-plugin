@@ -33,7 +33,7 @@
 {% if prefix %}
         path: "/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json",
 {% else %}
-        path: "/{{ pluralName }}.json",
+        path: "/{{ pluralName }}/{id}.json",
 {% endif %}
         summary: "Get {{ singularHumanName }}",
         description: "Get {{ singularHumanName }}",

@@ -26,9 +26,9 @@
 {% set IdProperty = OpenApiDocBlock.schemaProperty(propertySchema, 'id') %}
     #[OA\Put(
 {% if prefix %}
-        path: '/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/edit.json',
+        path: '/{{ OpenApiText.prefixToPath(prefix) }}/{{ OpenApiText.underscore(pluralName) }}/{id}.json',
 {% else %}
-        path: '/{{ pluralName }}/edit.json',
+        path: '/{{ pluralName }}/{id}.json',
 {% endif %}
         summary: 'Edit {{ singularName }}',
         description: 'Edit {{ singularName }}',
