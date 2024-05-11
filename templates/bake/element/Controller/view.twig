@@ -17,10 +17,6 @@
 {% set allAssociations = allAssociations|merge(Bake.aliasExtractor(modelObj, 'BelongsToMany')) %}
 {% set allAssociations = allAssociations|merge(Bake.aliasExtractor(modelObj, 'HasOne')) %}
 {% set allAssociations = allAssociations|merge(Bake.aliasExtractor(modelObj, 'HasMany')) %}
-{% set singularAssociations = Bake.aliasExtractor(modelObj, 'BelongsTo') %}
-{% set singularAssociations = singularAssociations|merge(Bake.aliasExtractor(modelObj, 'HasOne')) %}
-{% set pluralAssociations = Bake.aliasExtractor(modelObj, 'BelongsToMany') %}
-{% set pluralAssociations = pluralAssociations|merge(Bake.aliasExtractor(modelObj, 'HasMany')) %}
     /**
      * View method
      *
@@ -91,15 +87,6 @@
     )]
     public function view($id = null)
     {
-        if (!$this->request->is('get')) {
-            throw new MethodNotAllowedException();
-        }
-{% if allAssociations %}
-
-        $this->Crud->on('beforeFind', function (Event $event) {
-            $event->getSubject()->query->contain([{{ Bake.stringifyList(allAssociations, {'indent': false})|raw }}]);
-        });
-{% endif %}
-
-        return $this->Crud->execute();
+        ${{ singularName }} = $this->{{ currentModelName }}->get($id, contain: {{ Bake.exportArray(allAssociations)|raw }});
+        $this->set(compact('{{ singularName }}'));
     }
