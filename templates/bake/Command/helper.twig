@@ -9,17 +9,29 @@
  *
  * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  * @link          https://cakephp.org CakePHP(tm) Project
- * @since         2.0.0
+ * @since         2.6.0
  * @license       https://www.opensource.org/licenses/mit-license.php MIT License
  */
 #}
 {{ element('Bake.file_header', {
-    namespace: "#{namespace}\\Controller",
-    classImports: {
-        'BaseController': "#{baseNamespace}\\Controller\\AppController",
-    },
+    namespace: "#{namespace}\\Command\\Helper",
+    classImports: [
+        'Cake\\Console\\Helper',
+    ],
 }) }}
 
-class AppController extends BaseController
+/**
+ * {{ name }} command helper.
+ */
+class {{ name }}Helper extends Helper
 {
+    /**
+     * This method should output content using `$this->_io`.
+     *
+     * @param array $args The arguments for the helper.
+     * @return void
+     */
+    public function output(array $args): void
+    {
+    }
 }
