@@ -29,6 +29,13 @@
     namespace: fileBuilder.namespace,
     classImports: fileBuilder.classImports(['Cake\\ORM\\Entity']),
 }) }}
+{#
+暫定対応
+#}
+
+namespace App\Model\Entity;
+
+use Cake\ORM\Entity;
 use OpenApi\Attributes as OA;
 
 {{ OpenApiDocBlock.openApiClassDescription(name, 'Entity', annotations, propertySchema)|raw }}
