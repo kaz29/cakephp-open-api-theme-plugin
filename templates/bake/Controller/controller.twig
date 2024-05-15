@@ -21,6 +21,11 @@
     namespace: "#{namespace}\\Controller#{prefix}",
     classImports: (plugin or prefix) ? ["#{baseNamespace}\\Controller\\AppController"] : [],
 }) }}
+{#
+暫定対応
+#}
+
+use OpenApi\Attributes as OA;
 
 /**
  * {{ name }} Controller
