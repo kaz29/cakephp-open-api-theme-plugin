@@ -46,14 +46,14 @@
             new OA\Response(
                 response: 201,
                 description: 'OK',
-                content: new OA\JsonContent(ref: '#components/schemas/{{ singularHumanName }}'),
+                content: new OA\JsonContent(ref: '#/components/schemas/{{ singularHumanName }}'),
             ),
             new OA\Response(response: 401, description: 'Unauthorized'),
             new OA\Response(response: 403, description: 'Forbidden'),
             new OA\Response(
                 response: 422,
                 description: 'Validation Error',
-                content: new OA\JsonContent(ref: '#components/schemas/Application'),
+                content: new OA\JsonContent(ref: '#/components/schemas/ValidationErrorResponse'),
             ),
         ]
     )]
