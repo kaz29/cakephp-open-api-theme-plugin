@@ -7,6 +7,14 @@ use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use OpenApi\Attributes\Get;
+use OpenApi\Attributes\Post;
+use OpenApi\Attributes\Put;
+use OpenApi\Attributes\Delete;
+use OpenApi\Attributes\Tag;
+use OpenApi\Attributes\Response;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * OpenApiTheme\Command\OpenApiControllerCommand Test Case
@@ -71,6 +79,43 @@ class OpenApiControllerCommandTest extends TestCase
         $this->assertOutputContains('Baking controller class for Articles');
         $this->assertOutputContains('<success>Wrote</success>');
         $this->assertOutputContains(TEST_APP . 'Controller' . DS . 'ArticlesController.php');
+
+        $controllerPath = TEST_APP . 'Controller' . DS . 'ArticlesController.php';
+        $this->assertFileExists($controllerPath);
+        
+        require_once $controllerPath;
+        $className = 'TestApp\\Controller\\ArticlesController';
+        
+        $reflClass = new ReflectionClass($className);
+        $indexMethod = $reflClass->getMethod('index');
+        $this->assertNotEmpty(
+            $indexMethod->getAttributes(Get::class),
+            'indexメソッドにGetアトリビュートが存在しません'
+        );
+
+        $viewMethod = $reflClass->getMethod('view');
+        $this->assertNotEmpty(
+            $viewMethod->getAttributes(Get::class),
+            'viewメソッドにGetアトリビュートが存在しません'
+        );
+
+        $addMethod = $reflClass->getMethod('add');
+        $this->assertNotEmpty(
+            $addMethod->getAttributes(Post::class),
+            'addメソッドにPostアトリビュートが存在しません'
+        );
+
+        $editMethod = $reflClass->getMethod('edit');
+        $this->assertNotEmpty(
+            $editMethod->getAttributes(Put::class),
+            'editメソッドにPutアトリビュートが存在しません'
+        );
+
+        $deleteMethod = $reflClass->getMethod('delete');
+        $this->assertNotEmpty(
+            $deleteMethod->getAttributes(Delete::class),
+            'deleteメソッドにDeleteアトリビュートが存在しません'
+        );
     }
 
     /**
