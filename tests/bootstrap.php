@@ -29,14 +29,14 @@ if (!defined('DS')) {
 }
 define('ROOT', $root);
 define('APP_DIR', 'TestApp');
-define('APP', ROOT . DS . 'tests' . DS . 'test_app' . DS);
+define('APP', ROOT . DS . 'tests' . DS . 'test_app' . DS . 'src' . DS);
 define('TMP', sys_get_temp_dir() . DS);
 define('CONFIG', ROOT . DS . 'tests' . DS . 'config' . DS);
 define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
 define('TESTS', ROOT . DS . 'tests' . DS);
-define('TEST_APP', TESTS . 'test_app' . DS);
+define('TEST_APP', TESTS . 'test_app' . DS . 'src' . DS);
 define('WWW_ROOT', TEST_APP . 'webroot' . DS);
 
 require_once $root . '/vendor/autoload.php';
@@ -44,7 +44,6 @@ require_once CORE_PATH . 'config/bootstrap.php';
 
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
-use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Datasource\ConnectionManager;

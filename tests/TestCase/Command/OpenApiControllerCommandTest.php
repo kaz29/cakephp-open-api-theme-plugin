@@ -5,10 +5,8 @@ namespace OpenApiTheme\Test\TestCase\Command;
 
 use Cake\Console\TestSuite\ConsoleIntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use OpenApiTheme\Command\OpenApiControllerCommand;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\Filesystem\File;
 
 /**
  * OpenApiTheme\Command\OpenApiControllerCommand Test Case
