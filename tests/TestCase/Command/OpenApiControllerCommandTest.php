@@ -39,8 +39,8 @@ class OpenApiControllerCommandTest extends TestCase
 
         // テスト用のコントローラファイルを削除
         $paths = [
-            TEST_APP  . 'Controller' . DS . 'ArticlesController.php',
-            TEST_APP  . 'Controller' . DS . 'Admin' . DS . 'ArticlesController.php',
+            TEST_APP . 'Controller' . DS . 'ArticlesController.php',
+            TEST_APP . 'Controller' . DS . 'Admin' . DS . 'ArticlesController.php',
         ];
         foreach ($paths as $path) {
             if (file_exists($path)) {
@@ -72,6 +72,7 @@ class OpenApiControllerCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('Baking controller class for Articles');
         $this->assertOutputContains('<success>Wrote</success>');
+        $this->assertOutputContains(TEST_APP . 'Controller' . DS . 'ArticlesController.php');
     }
 
     /**
@@ -85,6 +86,7 @@ class OpenApiControllerCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('Baking controller class for Articles');
         $this->assertOutputContains('<success>Wrote</success>');
+        $this->assertOutputContains(TEST_APP . 'Controller' . DS . 'Admin' . DS . 'ArticlesController.php');
     }
 
     /**
@@ -98,6 +100,7 @@ class OpenApiControllerCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('Baking controller class for Articles');
         $this->assertOutputContains('<success>Wrote</success>');
+        $this->assertOutputContains(TEST_APP . 'Controller' . DS . 'ArticlesController.php');
     }
 
     /**
@@ -111,5 +114,6 @@ class OpenApiControllerCommandTest extends TestCase
         $this->assertExitSuccess();
         $this->assertOutputContains('Baking controller class for Articles');
         $this->assertOutputContains('<success>Wrote</success>');
+        $this->assertOutputContains(TEST_APP . 'Controller' . DS . 'ArticlesController.php');
     }
 }
